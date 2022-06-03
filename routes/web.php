@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use  App\Http\Controllers\TodoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +25,20 @@ Route::get('/', function () {
     ]);
 });
 
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function(){
+    Route::get('/todos',       [TodoController::class, 'index']);
+    Route::prefix('/todo')->middleware('auth')->group(function(){
+        Route::post('/withFinished',  [TodoController::class, 'toggleWithTrashed']);
+        Route::post('/store',  [TodoController::class, 'store']);
+        Route::put('/{id}' ,   [TodoController::class, 'update']);
+        Route::delete('/{id}/{permanent}', [TodoController::class, 'destroy'] );
+        Route::post('/restore/{id}', [TodoController::class, 'restore'] );
+    });
+});
 
 require __DIR__.'/auth.php';
