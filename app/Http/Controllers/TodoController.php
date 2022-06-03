@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Todo;
 use Auth;
 use Session;
+use App\Http\Requests\TodoRequest;
 
 class TodoController extends Controller
 {
@@ -34,73 +35,18 @@ class TodoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TodoRequest $request)
     {
-        $newTodo = new Todo;
-        $newTodo->user_id = Auth::user()->id;
-        $newTodo->title   = $request->todo['title'];
-        $newTodo->desc    = $request->todo['desc'];
-        $newTodo->save();
-
-        return $newTodo;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $existingTodo = Todo::find($id);
-
-        if ($existingTodo) {
-            $existingTodo->title = $request->todo['title'];
-            $existingTodo->desc  = $request->todo['desc'];
-            $existingTodo->update();
-            return $existingTodo;
-        }
-
-        return "Todo not found";
+        return Todo::create([
+            'user_id' => Auth::user()->id,
+            'title'   => $request->todo['title'],
+            'desc'    => $request->todo['desc']
+        ]);
     }
 
     /**
@@ -123,6 +69,12 @@ class TodoController extends Controller
         return "Todo not found";
     }
 
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function restore($id)
     {
         if ($existingTodo = Todo::where('id', $id)->withTrashed()->first()) {
