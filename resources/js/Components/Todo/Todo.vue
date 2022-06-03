@@ -62,7 +62,7 @@ export default {
             axios
                 .post("/todo/withFinished")
                 .then(() => {
-                    this.getTodos()
+                    this.getTodos();
                 })
                 .catch((error) => {
                     console.log(error);

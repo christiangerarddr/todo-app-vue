@@ -8,7 +8,7 @@
     </button>
     <div
         class="relative z-10"
-        :class="{'hidden' : hideForm}"
+        :class="{ hidden: hideForm }"
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true"
@@ -98,7 +98,7 @@ export default {
                 title: "",
                 desc: "",
             },
-            hideForm: true
+            hideForm: true,
         };
     },
     methods: {
@@ -115,7 +115,7 @@ export default {
                         this.todo.name = "";
                         this.$emit("syncTodo");
                     }
-                    this.hideForm = !this.hideForm
+                    this.hideForm = !this.hideForm;
                 })
                 .catch((error) => {
                     console.log(error);

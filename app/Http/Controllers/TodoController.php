@@ -19,7 +19,7 @@ class TodoController extends Controller
     {
         $todo = Todo::select(['id', 'title', 'desc', 'deleted_at'])->where('user_id', Auth::user()->id);
 
-        if(session()->get('withTrashed')) $todo->withTrashed();
+        if (session()->get('withTrashed')) $todo->withTrashed();
 
         return $todo->get();
     }
@@ -27,7 +27,7 @@ class TodoController extends Controller
     public function toggleWithTrashed()
     {
         $withFinished = session()->get('withTrashed');
-        if(null == $withFinished){
+        if (null == $withFinished) {
             session()->put('withTrashed', true);
         };
 
@@ -62,7 +62,7 @@ class TodoController extends Controller
             return "Todo deleted";
         }
 
-        if($permanent) {
+        if ($permanent) {
             Todo::where('id', $id)->withTrashed()->first()->forceDelete();
         }
 
@@ -84,5 +84,4 @@ class TodoController extends Controller
 
         return "Todo not found";
     }
-
 }
